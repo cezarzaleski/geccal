@@ -1,0 +1,16 @@
+{
+    "name": "Projeto Geccal",
+    "description": "Projeto Geccal ",
+    "authors": [
+        {
+            "name": "Cezar Gabriel Heinen Zaleski",
+            "email": "cezar.zaleski@gmail.com"
+        }
+    ],
+    "require": {
+            "php": ">=5.3.3",
+            "zendframework/skeleton-application": "dev-master",
+            "zendframework/zendframework": "2.*",
+            "doctrine/doctrine-orm-module": "0.*"
+    }
+}
