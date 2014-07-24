@@ -1,0 +1,43 @@
+<?php echo $this->doctype('XHTML5') ?>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt-br" xml:lang="pt-br">
+    <head>
+        <meta charset="UTF-8" />
+
+        <?php
+        echo $this->headTitle('Grupo Espírita Cristão a Caminho da Luz')->setSeparator(' - ')->setAutoEscape(false);
+
+        echo $this->headMeta()->appendName('description', "Grupo Espírita Cristão a Caminho da Luz - GECCAL, desde 1971.")->appendName('keywords', "Keyword")->appendName('author', "Cezar Zaleski e Reginaldo Júnior")->appendName('generator', 'HTML-KIT 292')->appendName('robots', "all");
+
+        echo $this->headLink(array(
+                    'rel' => 'shortcut icon',
+                    'href' => $this->basePath() . '/img/structure/geccal.ico'))
+                ->prependStylesheet($this->basePath() . '/css/structure/plugins/bootstrap/bootstrap.min.css')
+                ->prependStylesheet($this->basePath() . '/css/structure/login.css')
+        ?>
+
+    </head>
+
+    <body>
+
+        <nav role="navigation" class="navbar navbar-default navbar-static-top">
+            <div class="navbar-header">
+                <a href="http://www.geccal.org.br/" title="Grupo Espírita Cristão a Caminho da Luz" target="_blank" class="navbar-brand">GECCAL
+                </a>
+            </div>
+        </nav>
+        <div class="container">
+<?php //echo $this->content ?>
+        </div>
+        <footer role="contentinfo">
+            <p>&copy;2014 - GECCAL - Grupo Espírita-Cristão a Caminho da Luz&reg;</p>
+            <address>Sobradinho-DF, próximo ao Hospital Regional de Sobradinho</address>
+            <address>Desenvolvido pelo grupo <a href="http://www.develtec.com.br" target="_blank">Develtec</a></address>
+        </footer>
+        <?php
+        echo $this->headScript()->appendFile($this->basePath() . "/js/structure/plugins/jquery/jquery-1.10.2.js")
+                ->appendFile($this->basePath() . "/js/structure/plugins/bootstrap/bootstrap.min.js")
+                ->appendFile($this->basePath() . "/js/structure/plugins/sbAdmin/sb-admin.js");
+        ?>
+    </body>
+
+</html>

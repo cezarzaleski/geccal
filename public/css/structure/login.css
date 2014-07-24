@@ -1,0 +1,25 @@
+.login-panel {
+    margin-top: 25%;
+}
+footer{
+	padding-top:7px;
+	border-top:1px solid #DDDDDD;
+	line-height: 2px;
+	font-size: 7pt;
+	text-align: center;
+	width:100%;
+	background-color: #F8F8F8;
+	position: relative;
+	margin-top: -150px;
+	 position:fixed;
+
+            bottom:0px;
+}
+
+
+footer address{
+	margin: 0;
+}
+footer p{
+	margin-bottom: 7px;
+}
