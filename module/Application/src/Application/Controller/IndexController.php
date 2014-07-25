@@ -1,21 +1,20 @@
 <?php
-/**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/ZendSkeletonApplication for the canonical source repository
- * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- */
-
 namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\ViewModel;
+use Application\Form\LoginForm;
 
 class IndexController extends AbstractActionController
 {
     public function indexAction()
     {
-        return new ViewModel();
+        $form = new LoginForm();
+        $form->setAttribute('action',
+        $this->getRequest()->getBaseUrl().'/application/index/login');
+        $messages = "";
+        if($this->flashMessenger()->getMessages()){
+            $messages = implode(',', $this->flashMessenger()->getMessages());
+        }
+        return array('form'=>$form,'messages'=>  $messages);
     }
 }

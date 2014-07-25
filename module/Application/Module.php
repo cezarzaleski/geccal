@@ -5,6 +5,7 @@ namespace Application;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 
+
 class Module {
 
     public function onBootstrap(MvcEvent $e) {
@@ -23,8 +24,18 @@ class Module {
             'Zend\Loader\StandardAutoloader' => array(
                 'namespaces' => array(
                     __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
+                    'Base' => realpath(__DIR__
+                            . '/../../vendor/base/base/library/Base'),
                 ),
             ),
+        );
+    }
+
+    public function getViewHelperConfig() {
+        return array(
+            'invokables' => array(
+                'HtmlHelper' => 'Application\View\Helper\HtmlHelper'
+            )
         );
     }
 
@@ -35,13 +46,12 @@ class Module {
      */
     private function setLayout($eventManager) {
         $eventManager->getSharedManager()
-                ->attach('Zend\Mvc\Controller\AbstractActionController', 
-                        'dispatch', function($e) {
-            $controller = $e->getTarget();
-            $routeName = $e->getRouteMatch()->getMatchedRouteName();
-            $config = $e->getApplication()->getServiceManager()->get('config');
+                ->attach('Zend\Mvc\Controller\AbstractActionController', 'dispatch', function($e) {
+                    $controller = $e->getTarget();
+                    $routeName = $e->getRouteMatch()->getMatchedRouteName();
+                    $config = $e->getApplication()->getServiceManager()->get('config');
                     if (isset($config['route_layouts'][$routeName])) {
-                      $controller->layout($config['route_layouts'][$routeName]);
+                        $controller->layout($config['route_layouts'][$routeName]);
                     }
                 }, 1);
     }
