@@ -3,13 +3,14 @@
 namespace Application\Form;
 
 use Base\Form\AbstractForm;
+use Application\Filter\LoginFilter;
 
 class LoginForm extends AbstractForm {
 
     public function __construct($name = null) {
         parent::__construct('login');
         $this->setAttribute('method', 'post');
-//        $this->setInputFilter($inputFilter);
+        $this->setInputFilter(new LoginFilter());
         $atributes = array('placeholder' => 'Usuário',
             'maxlength' => '45',
             'class' => 'form-control',
