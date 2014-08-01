@@ -1,5 +1,7 @@
 <?php
 
+namespace Application;
+
 /**
  * Zend Framework (http://framework.zend.com/)
  *
@@ -78,7 +80,6 @@ return array(
     ),
     'route_layouts' => array(
         'home' => 'layout/login'
-        
     ),
     'view_manager' => array(
         'display_not_found_reason' => true,
@@ -104,4 +105,35 @@ return array(
             ),
         ),
     ),
+    'doctrine' => array(
+        'driver' => array(
+            __NAMESPACE__ . '_driver' => array(
+                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'cache' => 'array',
+                'paths' => array(
+                    __DIR__ . '/../src/' . __NAMESPACE__ .
+                    '/Entity'
+                )
+            ),
+            'orm_default' => array(
+                'drivers' => array(
+                    __NAMESPACE__ . '\Entity' => __NAMESPACE__ .
+                    '_driver'
+                )
+            )
+        )
+    ),
+    'session' => array(
+        'config' => array(
+            'class' => 'Zend\Session\Config\SessionConfig',
+            'options' => array(
+                'name' => 'geccal',
+            ),
+        ),
+        'storage' => 'Zend\Session\Storage\SessionArrayStorage',
+        'validators' => array(
+            'Zend\Session\Validator\RemoteAddr',
+            'Zend\Session\Validator\HttpUserAgent',
+        ),
+    )
 );
