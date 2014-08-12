@@ -1,19 +1,19 @@
 <?php
 $form = $this->form;
 $this->HtmlHelper()->setConfigFormGroup($configHtmlHelper);
+$form->setAttribute('action', $this->url('home'));
 ?>
 <div class="row">
     <div class="col-md-4 col-md-offset-4">
         <div class="login-panel panel panel-default">
             <?php
-            echo $this->formElementErrors()
-                    ->setMessageOpenFormat("<div class='alert 
-                        alert-danger alert-dismissable'>
-			<button aria-hidden='true' data-dismiss='alert' 
-                        class='close' type='button'>×</button>")
-                    ->setMessageSeparatorString("<br />")
-                    ->setMessageCloseString('</div>')
-                    ->render($form->get('noLogin'));
+            $flash = $this->flashMessenger();
+            $flash->setMessageOpenFormat('<div%s>
+                   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                    &times;
+                    </button>')
+                    ->setMessageCloseString('</div>');
+            echo $flash->renderCurrent('error', array('alert', 'alert-danger', 'alert-dismissable'));
             ?>
             <div class="panel-heading">
                 <h3 class="panel-title">Entrar</h3>
@@ -29,6 +29,26 @@ $this->HtmlHelper()->setConfigFormGroup($configHtmlHelper);
                 </div>
                 <?php echo $this->HtmlHelper()->formGroup($this->formElement($form->get('submit'))); ?>    
                 <?php echo $this->form()->closeTag($form); ?>
+                <div class="row">
+                    <div class="col-md-12">
+                        <?php
+                        echo $this->formElementErrors()
+                                ->setMessageOpenFormat('<div class="col-md-12 alert alert-danger ' .
+                                        'fade in" data-dismiss="alert" aria-hidden="true">' .
+                                        '<button class="close" aria-hidden="true" '
+                                        . 'data-dismiss="alert" type="button">×</button>')
+                                ->setMessageCloseString('</div>')
+                                ->render($form->get('noLogin'));
+                        echo $this->formElementErrors()
+                                ->setMessageOpenFormat('<div class="col-md-12 alert alert-danger ' .
+                                        'fade in" data-dismiss="alert" aria-hidden="true">' .
+                                        '<button class="close" aria-hidden="true" '
+                                        . 'data-dismiss="alert" type="button">×</button>')
+                                ->setMessageCloseString('</div>')
+                                ->render($form->get('noSenha'));
+                        ?>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

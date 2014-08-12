@@ -9,47 +9,62 @@ class IndexController extends AbstractActionController {
 
     private $form;
     private $view;
+    private $data;
 
     public function __construct()
     {
         $this->form = new LoginForm();
         $request = $this->getRequest();
-        if($request->isPost()){
+        if ($request->isPost()) {
             $data = $request->getPost();
             $this->form->setData($data);
         }
+        $configHtmlHelper = $this->configHelper();
+        $this->view = array('form' => $this->form,
+            'configHtmlHelper' => $configHtmlHelper);
     }
 
     public function indexAction()
     {
-        
-        $this->form->setAttribute('action', $this->getRequest()->getBaseUrl() . '/application/index/login');
-        $messages = "";
-        $configHtmlHelper = $this->configHelper();
-        if ($this->flashMessenger()->getMessages()) {
-            $messages = implode(',', $this->flashMessenger()->getMessages());
+        if ($this->getRequest()->isPost()) {
+            $this->logar();
         }
-        return array('form' => $this->form, 'messages' => $messages,
-            'configHtmlHelper' => $configHtmlHelper);
+        return $this->view;
     }
 
-    public function loginAction()
-    {
-        $this->__construct();
-        
-        
-        
-        return $this->redirect()->toRoute('home');
-        
-    }
-
-    protected function configHelper()
+    private function configHelper()
     {
         return array(
             'attributes' => array(
                 'class' => 'form-group'
             )
         );
+    }
+
+    private function populateData($form)
+    {
+        $data = $form->getData();
+        $this->data = array('noLogin' => $data['noLogin'],
+            'noSenha' => $data['noSenha']);
+    }
+
+    private function logar()
+    {
+        $this->__construct();
+        if (!$this->form->isValid()) {
+            return FALSE;
+        }
+        $adapter = $this->getServiceLocator()->get('Application\Auth\Adapter');
+        $this->populateData($this->form);
+        $adapter->setData($this->data);
+        $adapter->ip = $this->getRequest()->getServer()->get('REMOTE_ADDR');
+        $result = $adapter->authenticate();
+        if ($result) {
+            $this->flashMessenger()->clearMessages();
+            return $this->redirect()->toRoute('funcao-atividade')->fromString("funcao-atividade/listar");
+        }
+        $this->flashMessenger()
+                ->addErrorMessage('Usuário ou Senha não conferem.');
     }
 
 }

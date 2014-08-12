@@ -7,12 +7,14 @@ use Zend\Crypt\Password\Bcrypt;
 use Application\Auth\UsuarioAuth;
 use Zend\Log\Logger;
 use Zend\Log\Writer\Stream;
+use Zend\Log\Filter\Priority as LogFilter;
 
 class Adapter implements AdapterInterface {
 
-    protected $em;
-    protected $bcrypt;
-    protected $data;
+    private $em;
+    private $bcrypt;
+    private $data;
+    public $ip;
 
     function __construct($em)
     {
@@ -36,21 +38,41 @@ class Adapter implements AdapterInterface {
     {
         $repository = $this->em->getRepository('Application\Entity\Usuario');
         $data = $this->data;
-        $senha = $this->bcrypt->create($data['senha']);
-        $user = $repository->findByUsuarioAndSenha($data['noUsuario'], $senha);
+        $senha = $this->bcrypt->create($data['noSenha']);
+        $user = $repository->findByUsuarioAndSenha($data['noLogin'], $senha);
         if ($user) {
             $this->sessionStart($user);
+            $this->recordLog(TRUE);
+            return $user;
         }
+        return FALSE;
     }
 
-    protected function sessionStart($user)
+    private function sessionStart($user)
     {
         UsuarioAuth::_populatyIdentity($user);
     }
 
-    protected function recordLog()
+    private function recordLog($state)
     {
-        
+        $messages = $this->getData();
+        $datetime = new \DateTime('now');
+        $logger = new Logger();
+        $writer = new Stream(__DIR__ . '/../../../../../data/log/usuario/' .
+                'geccal' . $datetime->format('Y-m-d') . '.log');
+        $logger->addWriter($writer);
+        $filter = new LogFilter(Logger::DEBUG);
+        $writer->addFilter($filter);
+        foreach ($messages as $i => $message) {
+            if ($i == 'senha' && $state) {
+                continue;
+            }
+            $message = str_replace("\n", "\n", $message);
+            $logger->debug("Autentication: $i: $message");
+        }
+        $logger->alert("IP: " . $this->ip);
+        ($state) ? $logger->alert('Status: Usuário Logado \n') :
+                        $logger->alert('Status: Falha ao Logar\n');
     }
 
 }

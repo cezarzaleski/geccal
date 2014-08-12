@@ -79,7 +79,8 @@ return array(
         ),
     ),
     'route_layouts' => array(
-        'home' => 'layout/login'
+        'home' => 'layout/login',
+        'funcao-atividade' => 'layout/layout'
     ),
     'view_manager' => array(
         'display_not_found_reason' => true,
@@ -96,6 +97,9 @@ return array(
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',
+        ),
+        'strategies' => array(
+            'ViewJsonStrategy',
         ),
     ),
     // Placeholder for console routes
