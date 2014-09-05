@@ -4,6 +4,7 @@ namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Application\Form\LoginForm;
+use Zend\Authentication\AuthenticationService;
 
 class IndexController extends AbstractActionController {
 
@@ -61,10 +62,25 @@ class IndexController extends AbstractActionController {
         $result = $adapter->authenticate();
         if ($result) {
             $this->flashMessenger()->clearMessages();
-            return $this->redirect()->toRoute('funcao-atividade')->fromString("funcao-atividade/listar");
+            return $this->redirect()->toUrl('/admin/funcao-atividade/listar');
         }
         $this->flashMessenger()
                 ->addErrorMessage('Usuário ou Senha não conferem.');
+    }
+
+    /**
+     * Metodo para logout
+     *
+     * @access public
+     * @return Redirect home
+     */
+    public function logoutAction()
+    {
+        $auth = new AuthenticationService;
+        $auth->clearIdentity();
+        $usuarioAuth = $this->getServiceLocator()->get('Application\Auth\UsuarioAuth');
+        $usuarioAuth->logout();
+        return $this->redirect()->toRoute('home');
     }
 
 }

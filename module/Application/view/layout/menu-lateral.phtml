@@ -1,0 +1,14 @@
+<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul id="side-menu" class="nav">
+            <li class="information-user">
+                <?php if ($usuarioAuth->getLoggedUser()) { ?>
+                    <span class="text-center "><?php echo $usuarioAuth->getLoggedUser()->noPessoa; ?><br />
+                        Último log em <?php echo $usuarioAuth->getLoggedUser()->dtUltLog; ?><br />
+                        Perfil <?php echo $usuarioAuth->getLoggedUser()->noPerfil; ?></span>
+                <?php } ?>
+            </li>
+            <?php echo $this->Menu()->sideMenu(); ?>
+        </ul>
+    </div>
+</nav>

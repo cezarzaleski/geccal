@@ -8,9 +8,9 @@ class FuncaoAtividade extends ControllerAbstract {
     public function __construct()
     {
         $this->entity = "Application\Entity\FuncaoAtividade";
-        $this->form = "";
-        $this->service = "";
-        $this->controller="";
+//        $this->form = "";
+//        $this->service = "";
+//        $this->controller="";
                
     }
     

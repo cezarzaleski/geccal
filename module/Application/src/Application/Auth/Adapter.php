@@ -52,6 +52,7 @@ class Adapter implements AdapterInterface {
     {
         UsuarioAuth::_populatyIdentity($user);
     }
+    
 
     private function recordLog($state)
     {

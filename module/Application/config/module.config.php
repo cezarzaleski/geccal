@@ -22,6 +22,16 @@ return array(
                     ),
                 ),
             ),
+            'logout' => array(
+                'type' => 'Literal',
+                'options' => array(
+                    'route' => '/logout',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Index',
+                        'action' => 'logout',
+                    )
+                )
+            ),
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
@@ -89,11 +99,19 @@ return array(
         'not_found_template' => 'error/404',
         'exception_template' => 'error/index',
         'template_map' => array(
-            'layout/layout' => __DIR__ . '/../view/layout/layout.phtml',
-            'layout/login' => __DIR__ . '/../view/layout/login.phtml',
-            'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
             'error/404' => __DIR__ . '/../view/error/404.phtml',
-            'error/index' => __DIR__ . '/../view/error/index.phtml',
+            'layout/layout' => __DIR__ .
+            '/../view/layout/layout.phtml',
+            'layout/login' => __DIR__ .
+            '/../view/layout/login.phtml',
+            'error/index' => __DIR__ .
+            '/../view/error/index.phtml',
+            'layout/topo' => __DIR__ .
+            '/../view/layout/topo.phtml',
+            'layout/menu-lateral' => __DIR__ .
+            '/../view/layout/menu-lateral.phtml',
+            'layout/menu-modal' => __DIR__ .
+            '/../view/layout/modal.phtml'
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',
@@ -107,6 +125,19 @@ return array(
         'router' => array(
             'routes' => array(
             ),
+        ),
+    ),
+    'session' => array(
+        'config' => array(
+            'class' => 'Zend\Session\Config\SessionConfig',
+            'options' => array(
+                'name' => 'geccal',
+            ),
+        ),
+        'storage' => 'Zend\Session\Storage\SessionArrayStorage',
+        'validators' => array(
+            'Zend\Session\Validator\RemoteAddr',
+            'Zend\Session\Validator\HttpUserAgent',
         ),
     ),
     'doctrine' => array(

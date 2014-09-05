@@ -26,7 +26,7 @@ class UsuarioAuth {
      * Instância Única na Memória
      * @var UsuarioAuth
      */
-    private static $container = null;
+    private static $container = NULL;
 
     /**
      * Acesso Singleton
@@ -34,7 +34,7 @@ class UsuarioAuth {
      */
     public static function getInstance()
     {
-        if (self::$container == null) {
+        if (self::$container == NULL) {
             self::$container = new Container();
         }
         return self::$container;
@@ -51,11 +51,23 @@ class UsuarioAuth {
 
     public static function _populatyIdentity($obUser)
     {
-        UsuarioAuth::getInstance()->offsetSet('obUser', $obUser);
+        $objSessao = new \stdClass();
+        $objSessao->idUsuario = $obUser->getIdUsuario()->getIdPessoaFisica()->getidPessoa();
+        $objSessao->noUsuario = $obUser->getNoUsuario();
+        $objSessao->noPessoa = $obUser->getIdUsuario()->getIdPessoaFisica()->getNoPessoa();
+        $objSessao->idPerfil = $obUser->getIdPerfil()->getIdPerfil();
+        $objSessao->noPerfil = $obUser->getIdPerfil()->getNoPerfil();
+        $dtUltLog = new \DateTime('now');
+        if($obUser->getDtUltVisita()){
+        	$dtUltLog = $obUser->getDtUltVisita();
+        }
+        $objSessao->dtUltLog = $dtUltLog->format('d/m/Y H:i:s');
+        $objSessao->inicioSessao = time();
+        UsuarioAuth::getInstance()->offsetSet('obUser', $objSessao);
     }
 
     public function logout()
     {
-        return $this->container->offsetUnset('obUser');
+        return UsuarioAuth::getInstance()->offsetUnset('obUser');
     }
 }
