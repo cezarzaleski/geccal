@@ -19,6 +19,7 @@ abstract class ControllerAbstract extends AbstractActionController {
     protected $viewModel;
     protected $controller;
     protected $criptografia;
+    protected $configHtmlHelper;
 
     public function listarAction()
     {
@@ -43,7 +44,8 @@ abstract class ControllerAbstract extends AbstractActionController {
                 'message' => 'Não foi possível cadastrar, '
                 . 'entre em contato com o Administrador.'));
         }
-        return new ViewModel(array('form' => $form));
+        return new ViewModel(array('form' => $form,
+            'configHtmlHelper' => $this->configHtmlHelper));
     }
 
     public function editarAction()
@@ -113,5 +115,4 @@ abstract class ControllerAbstract extends AbstractActionController {
         return array('error' => TRUE,
             'message' => 'Não foi possível cadastrar, entre em contato com o Administrador.');
     }
-
 }
