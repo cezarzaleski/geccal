@@ -1,7 +1,7 @@
 <?php
 $form = $this->form;
 $this->HtmlHelper()->setConfigFormGroup($configHtmlHelper);
-$form->setAttribute('action', $this->url('home'));
+//$form->setAttribute('action', $this->url('/admin/funcao-atividade/cadastrar'));
 ?>
 
 <div id="page-wrapper">
@@ -22,20 +22,20 @@ $form->setAttribute('action', $this->url('home'));
                     <i class="fa fa-files-o fa-fw"></i>
                     Cadastrar Função/Atividade
                 </div>
-                <div class="panel-body btn btn-">
+                <div class="panel-body">
+                    <p class="requiredFild">*Campo obrigatório</p>
                     <?php echo $this->form()->openTag($form); ?>
                     <legend>Cadastrar Função/Atividade</legend>
                     <fieldset>
                         <?php
                         echo $this->HtmlHelper()->formGroup($this->
-                                formElement($form->get('noFuncaoAtividade')),
-                                $form->get('noFuncaoAtividade')->getLabel());
-                        ?>
-                        <?php echo $this->HtmlHelper()->formGroup(
+                                        formElement($form->get('noFuncaoAtividade')), $form->get('noFuncaoAtividade')->getLabel());
+                        echo $this->HtmlHelper()->formGroup(
                                 $this->formElement($form->get('submit')));
                         ?>    
                     </fieldset>
                     <?php echo $this->form()->closeTag(); ?>
+                </div>
                 </div>
             </div>
         </div>

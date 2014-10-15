@@ -18,5 +18,10 @@ class Utils {
         $url = explode('/', $uri);
         return $url[1];
     }
+    
+    public function getRequest()
+    {
+        return $this->mvcEvent->getRequest();
+    }
 
 }

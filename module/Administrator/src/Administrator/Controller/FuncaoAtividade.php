@@ -13,7 +13,7 @@ class FuncaoAtividade extends ControllerAbstract {
         $this->configHtmlHelper = array('attributes' => array(
                 'class' => 'form-group'
             ),  'label' => array('attributes' => array()));
-//        $this->service = "";
+        $this->service = "FuncaoAtividadeService";
 //        $this->controller="";
     }
 

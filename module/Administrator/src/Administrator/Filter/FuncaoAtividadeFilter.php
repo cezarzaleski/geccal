@@ -19,7 +19,8 @@ class FuncaoAtividadeFilter extends InputFilter{
                 array(
                     'name' => 'NotEmpty',
                     'options' => array(
-                        'messages' => array('isEmpty' => 'Nome de usuário não pode estar em branco'),
+                        'messages' => array('isEmpty' => 'Função/Atividade'
+                            . ' não pode estar em branco'),
                     )
                 )
             )

@@ -108,6 +108,7 @@ abstract class ControllerAbstract extends AbstractActionController {
     private function insert($data)
     {
         $service = $this->getServiceLocator()->get($this->service);
+        
         if ($service->insert($data)) {
             return array('error' => FALSE,
                 'message' => 'Cadastrado com Sucesso.');

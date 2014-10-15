@@ -14,7 +14,6 @@
                     'rel' => 'shortcut icon',
                     'href' => $this->basePath() . '/img/structure/geccal.ico'))
                 ->prependStylesheet($this->basePath() . '/css/structure/layout.css')
-                ->prependStylesheet($this->basePath() . '/css/structure/plugins/fixedHeader-2.1.0/css/dataTables.fixedHeader.min.css')
                 ->prependStylesheet($this->basePath() . '/css/structure/plugins/sbAdmin/sb-admin.css')
                 ->prependStylesheet($this->basePath() . '/css/structure/plugins/font-awesome/css/font-awesome.min.css')
                 ->prependStylesheet($this->basePath() . '/css/structure/plugins/dataTables/dataTables.bootstrap.css')
@@ -42,7 +41,8 @@
                 ->appendFile($this->basePath() . "/js/structure/plugins/validate/messages_pt_BR.js")
                 ->appendFile($this->basePath() . "/js/structure/plugins/sbAdmin/sb-admin.js")
                 ->appendFile($this->basePath() . "/js/structure/geral.js")
-                ->appendFile($this->basePath() . "/js/structure/Utils.js");
+                ->appendFile($this->basePath() . "/js/structure/Utils.js")
+                ->appendFile($this->basePath() . $this->UtilHelper()->getJavaScript());
         ?>
     </body>
 </html>

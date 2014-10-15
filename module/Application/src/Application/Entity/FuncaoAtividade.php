@@ -46,9 +46,10 @@ class FuncaoAtividade
     /**
      * Constructor
      */
-    public function __construct()
+    public function __construct($options = null)
     {
         $this->idPessoaFisica = new \Doctrine\Common\Collections\ArrayCollection();
+        Configurator::configure($this, $options);
     }
     
 

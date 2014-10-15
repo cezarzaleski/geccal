@@ -10,11 +10,13 @@ use Base\Acl\Authorization;
 use Base\Service\Authentication;
 use Base\Service\Utils;
 use Application\View\Helper\Menu;
+use Application\View\Helper\UtilHelper;
+use Application\Service\FuncaoAtividadeService;
 
 class Module {
-    
+
     private $mvcEvent;
-    
+
     public function onBootstrap(MvcEvent $e)
     {
         $eventManager = $e->getApplication()->getEventManager();
@@ -52,9 +54,13 @@ class Module {
             ),
             'factories' => array(
                 'Menu' => function ($sm) {
-                    $service = $sm->getServiceLocator();
-                    return new Menu($service->get('Doctrine\ORM\EntityManager'), $service->get('Base\Service\Utils'));
-        }
+            $service = $sm->getServiceLocator();
+            return new Menu($service->get('Doctrine\ORM\EntityManager'), $service->get('Base\Service\Utils'));
+        },
+                'UtilHelper' => function ($sm) {
+            $service = $sm->getServiceLocator();
+            return new UtilHelper($service->get('Base\Service\Utils'));
+        },
             )
         );
     }
@@ -122,6 +128,9 @@ class Module {
         },
                 'Base\Service\Utils' => function () {
             return new Utils($this->mvcEvent);
+        },
+                'FuncaoAtividadeService' => function ($sm) {
+            return new FuncaoAtividadeService($sm->get('Doctrine\ORM\EntityManager'));
         }
             ),
         );

@@ -16,11 +16,12 @@ class FuncaoAtividadeForm extends AbstractForm {
         $atributes = array('placeholder' => 'Função/Atividade',
             'maxlength' => '45',
             'class' => 'form-control',
+            'required' => 'true',
             'autofocus' => TRUE);
-        $this->addElement('noFuncaoAtividade', 'text', 'Função Atividade', 
+        $this->addElement('noFuncaoAtividade', 'text', 'Função Atividade*', 
                 $atributes);
         $atributesSubmit = array('value' => 'Cadastrar',
-            'class' => 'btn btn-default');
+            'class' => 'btn btn-default btn-primary');
         $this->addElement('submit', 'submit', 'Cadastrar', $atributesSubmit);
     }
 
