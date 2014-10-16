@@ -9,9 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="funcao_atividade")
  * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Application\Repository\FuncaoAtividadeRepository") 
  */
-class FuncaoAtividade
-{
+class FuncaoAtividade {
+
     /**
      * @var integer
      *
@@ -51,7 +52,6 @@ class FuncaoAtividade
         $this->idPessoaFisica = new \Doctrine\Common\Collections\ArrayCollection();
         Configurator::configure($this, $options);
     }
-    
 
     /**
      * Get idFuncaoAtividade
@@ -72,7 +72,7 @@ class FuncaoAtividade
     public function setNoFuncaoAtividade($noFuncaoAtividade)
     {
         $this->noFuncaoAtividade = $noFuncaoAtividade;
-    
+
         return $this;
     }
 
@@ -95,7 +95,7 @@ class FuncaoAtividade
     public function setStAtivo($stAtivo)
     {
         $this->stAtivo = $stAtivo;
-    
+
         return $this;
     }
 
@@ -118,7 +118,7 @@ class FuncaoAtividade
     public function addIdPessoaFisica(\Application\Entity\PessoaFisica $idPessoaFisica)
     {
         $this->idPessoaFisica[] = $idPessoaFisica;
-    
+
         return $this;
     }
 
@@ -141,4 +141,14 @@ class FuncaoAtividade
     {
         return $this->idPessoaFisica;
     }
+
+    public function toArray()
+    {
+        return array(
+            'idFuncaoAtividade' => $this->getIdFuncaoAtividade(),
+            'noFuncaoAtividade' => $this->getNoFuncaoAtividade(),
+            'stAtivo' => $this->getStAtivo()
+        );
+    }
+
 }

@@ -50,7 +50,8 @@ class Module {
     {
         return array(
             'invokables' => array(
-                'HtmlHelper' => 'Application\View\Helper\HtmlHelper'
+                'HtmlHelper' => 'Application\View\Helper\HtmlHelper',
+                'Criptografia' => 'Application\View\Helper\Criptografia'
             ),
             'factories' => array(
                 'Menu' => function ($sm) {
