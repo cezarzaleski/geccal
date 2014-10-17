@@ -63,32 +63,28 @@ abstract class ControllerAbstract extends AbstractActionController {
         $repository = $this->getEm()->getRepository($this->entity);
         if ($this->params()->fromRoute('id', 0)) {
             $entity = $repository->find($this->getCriptografia()->
-                    descript($this->params()->fromRoute('id', 0)));
+                            descript($this->params()->fromRoute('id', 0)));
             $array = $entity->toArray();
+
+            $array['idFuncaoAtividade'] = $this->getCriptografia()
+                    ->cripto($array['idFuncaoAtividade']);
             $array['stAtivo'] = TRUE;
             $form->setData($array);
-            $this->viewModel = new ViewModel(array('form' => $form, 
+            $this->viewModel = new ViewModel(array('form' => $form,
                 'entity' => $entity->toArray()));
         }
-//        if ($request->isPost()) {
-//            $data = $request->getPost()->toArray();
-//            $form->setData($data);
-//            if ($form->isValid()) {
-//                $service = $this->getServiceLocator()->get($this->service);
-//                if ($service->update($data['idFuncaoAtividade'], $data)) {
-//                    $return = array('error' => FALSE,
-//                        'message' => 'Alterado com Sucesso.');
-//                } else {
-//                    $return = array('error' => TRUE,
-//                        'message' => 'Não foi possível alterar, entre em contato com o Administrador.');
-//                }
-//            } else {
-//                $return = array('error' => TRUE,
-//                    'message' => 'Não foi possível alterar, entre em contato com o Administrador.');
-//            }
-//            $this->viewModel = $this->getJson($return);
-//        }
-//        return $this->viewModel;
+        if ($request->isPost()) {
+            $data = $request->getPost()->toArray();
+            $form->setData($data);
+            if ($form->isValid()) {
+                return new JsonModel($this->update($data));
+            }
+            return new JsonModel(array('error' => TRUE,
+                'message' => 'Não foi possível atualizar, '
+                . 'entre em contato com o Administrador.'));
+        }
+        return new ViewModel(array('form' => $form,
+            'configHtmlHelper' => $this->configHtmlHelper));
     }
 
     public function deleteAction()
@@ -111,7 +107,7 @@ abstract class ControllerAbstract extends AbstractActionController {
     protected function getCriptografia()
     {
         $this->criptografia = $this->getServiceLocator()
-                ->get('viewhelpermanager')->get('Criptografia');
+                        ->get('viewhelpermanager')->get('Criptografia');
         return $this->criptografia;
     }
 
@@ -124,6 +120,18 @@ abstract class ControllerAbstract extends AbstractActionController {
         }
         return array('error' => TRUE,
             'message' => 'Não foi possível cadastrar, entre em contato com o '
+            . 'Administrador.');
+    }
+
+    private function update($data)
+    {
+        $service = $this->getServiceLocator()->get($this->service);
+        if ($service->update($data)) {
+            return array('error' => FALSE,
+                'message' => 'Atualizado com Sucesso.');
+        }
+        return array('error' => TRUE,
+            'message' => 'Não foi possível atualizar, entre em contato com o '
             . 'Administrador.');
     }
 

@@ -18,9 +18,7 @@ abstract class AbstractService {
     }
     
     public function insert(array $data) {
-        \Zend\Debug\Debug::dump($data);
         $entity = new $this->entity($data);
-        \Zend\Debug\Debug::dump($entity);
         $this->em->persist($entity);
         $this->em->flush();
         return $entity;

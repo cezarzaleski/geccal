@@ -1,8 +1,6 @@
 <?php
-//$form = $this->form;
-//$form->setAttribute('action', $this->url('home'));
-//$form->setAttribute('class', "form");
-//$form->setAttribute('id', "form");
+$form = $this->form;
+$this->HtmlHelper()->setConfigFormGroup($configHtmlHelper);
 ?>
 <div id="page-wrapper">
     <div class="row">
@@ -30,20 +28,20 @@
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
-                    <?php //echo $this->form()->openTag($form); ?>
+                    <p class="requiredFild">*Campo obrigatório</p>
+                    <?php echo $this->form()->openTag($form); ?>
                     <legend>Editar Função/Atividade</legend>
                     <fieldset>
-                        <div class="form-group">
-                            <!-- 							         <label class="control-label" for="noFuncaoAtividade">Função Atividade: </label> -->
-                            <?php //echo $this->formRow($form->get('noFuncaoAtividade')); ?>
-                            <div class="errorInput"></div>
-                        </div>
                         <?php
-                        //echo $this->formRow($form->get('idFuncaoAtividade'));
-                        //echo $this->formRow($form->get('submit'));
+                        echo $this->HtmlHelper()->formGroup($this->
+                                formElement($form->get('noFuncaoAtividade')), 
+                                $form->get('noFuncaoAtividade')->getLabel());
+                        echo $this->formElement($form->get('idFuncaoAtividade'));
+                        echo $this->HtmlHelper()->formGroup(
+                                $this->formElement($form->get('submit')));
                         ?>
                     </fieldset>
-                    <?php //echo $this->form()->closeTag(); ?>
+                    <?php echo $this->form()->closeTag(); ?>
                 </div>
             </div>
         </div>

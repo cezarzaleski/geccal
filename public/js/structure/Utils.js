@@ -47,10 +47,20 @@ var Utils = {
                 btn.button('reset');
             },
             success: function(data, textStatus) {
-                alert(data);
+                var objJson = $.parseJSON(data);
+                if (!objJson.error)
+                {
+                    $('#myModal #myModalLabel').html("SUCESSO");
+                    
+                } else
+                {
+                    $('#myModal #myModalLabel').html("ERRO");
+                }
+                $('#myModal').modal('show');
+                $('#myModal .modal-body').html(objJson.message);
             },
             error: function(xhr, er) {
-//                window.reload();
+                window.reload();
             }
         });
     }
