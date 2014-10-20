@@ -4,9 +4,10 @@
 var Utils = {
     //
     edition: function(url) {
-        $('a#excluir').show();
         var option = true;
+//        $('a#excluir button').show();
         $('td input[type=checkbox]').click(function() {
+            
             var idCheck = $(this).attr('rel');
             option = false;
             var check = false;
@@ -14,13 +15,15 @@ var Utils = {
                 check = true;
             });
             if (check) {
-                $('td[rel="' + idCheck + '"]').each(function() {
-                    if ($(this).text() == "Ativo") {
-                        $('a#excluir').show();
+                $('tr[rel="' + idCheck + '"]').each(function() {
+                    alert('tr[rel="' + idCheck + '"]');
+//                    if ($(this).text() === "Ativo") {
+                    if ($(this).chetext() === "Ativo") {
+                        $('a#excluir button').show();
                     }
                 });
             } else {
-                $('div#excluir').hide();
+                $('div#excluir button').hide();
             }
         });
         $('tbody tr td.link').click(function() {
@@ -34,7 +37,7 @@ var Utils = {
             }
         });
     },
-    ajax: function(url, type, serialize, btn) {
+    ajax: function(url, type, serialize, btn, redirect) {
         $.ajax({
             url: url,
             dataType: 'text',
@@ -47,17 +50,28 @@ var Utils = {
                 btn.button('reset');
             },
             success: function(data, textStatus) {
+//                alert(data);
+//                return;
+                var message;
                 var objJson = $.parseJSON(data);
                 if (!objJson.error)
                 {
                     $('#myModal #myModalLabel').html("SUCESSO");
-                    
+                    message = objJson.message;
+
                 } else
                 {
                     $('#myModal #myModalLabel').html("ERRO");
+                    message = "Por favor, entre em contato com o Administrador.";
                 }
                 $('#myModal').modal('show');
-                $('#myModal .modal-body').html(objJson.message);
+                $('#myModal .modal-body').html(message);
+                if(redirect){
+                    $('.close').click(function() {
+                    location.href = redirect;
+                });
+                }
+                
             },
             error: function(xhr, er) {
                 window.reload();

@@ -6,8 +6,7 @@ $(function() {
             var serialize = $('.form').serialize();
             var btn = $(this);
             Utils.ajax("/admin/funcao-atividade/editar", "post",
-                    serialize, btn);
-//            $('.form [name="noFuncaoAtividade"]').val("");
+                    serialize, btn, '/admin/funcao-atividade/listar');
         }
     });
 });

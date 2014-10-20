@@ -33,6 +33,7 @@ abstract class ControllerAbstract extends AbstractActionController {
         $partialLoop->setObjectKey('model');
         $pageAdapter = new ArrayAdapter($data);
         $paginator = new Paginator($pageAdapter);
+        $paginator->setItemCountPerPage(1000000);
         return new ViewModel(array('data' => $paginator));
     }
 
@@ -62,16 +63,7 @@ abstract class ControllerAbstract extends AbstractActionController {
         $request = $this->getRequest();
         $repository = $this->getEm()->getRepository($this->entity);
         if ($this->params()->fromRoute('id', 0)) {
-            $entity = $repository->find($this->getCriptografia()->
-                            descript($this->params()->fromRoute('id', 0)));
-            $array = $entity->toArray();
-
-            $array['idFuncaoAtividade'] = $this->getCriptografia()
-                    ->cripto($array['idFuncaoAtividade']);
-            $array['stAtivo'] = TRUE;
-            $form->setData($array);
-            $this->viewModel = new ViewModel(array('form' => $form,
-                'entity' => $entity->toArray()));
+            $this->loadingData($form, $repository);
         }
         if ($request->isPost()) {
             $data = $request->getPost()->toArray();
@@ -123,10 +115,24 @@ abstract class ControllerAbstract extends AbstractActionController {
             . 'Administrador.');
     }
 
+    private function loadingData($form, $repository)
+    {
+        $entity = $repository->find($this->getCriptografia()->
+                        descript($this->params()->fromRoute('id', 0)));
+        $array = $entity->toArray();
+        $id = array_keys($array)[0];
+        $array['stAtivo'] = TRUE;
+        $array[$id] = $this->getCriptografia()->cripto($array[$id]);
+        $form->setData($array);
+        $this->viewModel = new ViewModel(array('form' => $form,
+            'entity' => $entity->toArray()));
+    }
+
     private function update($data)
     {
         $service = $this->getServiceLocator()->get($this->service);
-        if ($service->update($data)) {
+        $id = $this->getCriptografia()->descript(array_pop($data));
+        if ($service->update($id, $data)) {
             return array('error' => FALSE,
                 'message' => 'Atualizado com Sucesso.');
         }
