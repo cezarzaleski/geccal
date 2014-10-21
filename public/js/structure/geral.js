@@ -4,7 +4,7 @@ $(function() {
     var urlArray = urlString.split("/");
     $("ul.navbar-left li").each(function() {
         var modulo = $(this).children('a').attr('rel');
-        if (modulo == urlArray[3]) {
+        if (modulo === urlArray[3]) {
             $(this).addClass("active");
         } else {
             $(this).removeClass("active");

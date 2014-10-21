@@ -5,9 +5,8 @@ $(function() {
         if ($('.form').valid()) {
             var serialize = $('.form').serialize();
             var btn = $(this);
-            Utils.ajax("/admin/funcao-atividade/cadastrar", "post",
-                    serialize, btn);
-            $('.form [name="noFuncaoAtividade"]').val("");
+            Utils.ajax("/admin/funcao-atividade/editar", "post",
+                    serialize, btn, '/admin/funcao-atividade/listar');
         }
     });
 });

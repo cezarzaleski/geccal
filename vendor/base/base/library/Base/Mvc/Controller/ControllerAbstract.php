@@ -26,7 +26,13 @@ abstract class ControllerAbstract extends AbstractActionController {
         $data = $this->getEm()
                 ->getRepository($this->entity)
                 ->findAll();
-        return new ViewModel(array('data' => $data));
+        $partialLoop = $this->getServiceLocator()->get('viewhelpermanager')
+                ->get('PartialLoop');
+        $partialLoop->setObjectKey('model');
+        $pageAdapter = new ArrayAdapter($data);
+        $paginator = new Paginator($pageAdapter);
+        $paginator->setItemCountPerPage(1000000);
+        return new ViewModel(array('data' => $paginator));
     }
 
     public function cadastrarAction()
@@ -55,32 +61,20 @@ abstract class ControllerAbstract extends AbstractActionController {
         $request = $this->getRequest();
         $repository = $this->getEm()->getRepository($this->entity);
         if ($this->params()->fromRoute('id', 0)) {
-            $entity = $repository->find($this->getCriptografia()->descript($this->params()->fromRoute('id', 0)));
-            $array = $entity->toArray();
-            $array['stAtivo'] = TRUE;
-            $form->setData($array);
-            $this->viewModel = new ViewModel(array('form' => $form, 'entity' => $entity->toArray()));
+            $this->loadingData($form, $repository);
         }
         if ($request->isPost()) {
             $data = $request->getPost()->toArray();
             $form->setData($data);
             if ($form->isValid()) {
-                $service = $this->getServiceLocator()->get($this->service);
-
-                if ($service->update($data['idFuncaoAtividade'], $data)) {
-                    $return = array('error' => FALSE,
-                        'message' => 'Alterado com Sucesso.');
-                } else {
-                    $return = array('error' => TRUE,
-                        'message' => 'Não foi possível alterar, entre em contato com o Administrador.');
-                }
-            } else {
-                $return = array('error' => TRUE,
-                    'message' => 'Não foi possível alterar, entre em contato com o Administrador.');
+                return new JsonModel($this->update($data));
             }
-            $this->viewModel = $this->getJson($return);
+            return new JsonModel(array('error' => TRUE,
+                'message' => 'Não foi possível atualizar, '
+                . 'entre em contato com o Administrador.'));
         }
-        return $this->viewModel;
+        return new ViewModel(array('form' => $form,
+            'configHtmlHelper' => $this->configHtmlHelper));
     }
 
     public function deleteAction()
@@ -101,7 +95,8 @@ abstract class ControllerAbstract extends AbstractActionController {
 
     protected function getCriptografia()
     {
-        $this->criptografia = $this->getServiceLocator()->get('viewhelpermanager')->get('Criptografia');
+        $this->criptografia = $this->getServiceLocator()
+                        ->get('viewhelpermanager')->get('Criptografia');
         return $this->criptografia;
     }
 
@@ -116,4 +111,31 @@ abstract class ControllerAbstract extends AbstractActionController {
         return array('error' => TRUE,
             'message' => 'Não foi possível cadastrar, entre em contato com o Administrador.');
     }
+
+    private function loadingData($form, $repository)
+    {
+        $entity = $repository->find($this->getCriptografia()->
+                        descript($this->params()->fromRoute('id', 0)));
+        $array = $entity->toArray();
+        $id = array_keys($array)[0];
+        $array['stAtivo'] = TRUE;
+        $array[$id] = $this->getCriptografia()->cripto($array[$id]);
+        $form->setData($array);
+        $this->viewModel = new ViewModel(array('form' => $form,
+            'entity' => $entity->toArray()));
+    }
+
+    private function update($data)
+    {
+        $service = $this->getServiceLocator()->get($this->service);
+        $id = $this->getCriptografia()->descript(array_pop($data));
+        if ($service->update($id, $data)) {
+            return array('error' => FALSE,
+                'message' => 'Atualizado com Sucesso.');
+        }
+        return array('error' => TRUE,
+            'message' => 'Não foi possível atualizar, entre em contato com o '
+            . 'Administrador.');
+    }
+
 }

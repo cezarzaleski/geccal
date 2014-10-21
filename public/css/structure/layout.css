@@ -32,20 +32,13 @@ background-color: #EEEEEE;
 .pointer{
 	cursor: pointer;
 }
-
 a#excluir{
-    display: none;
+    
 }
-
 a#excluir button{
-    width: 7%;
-    height: 32px;
+    display: none;
     float: right;
-    margin: 0 5% 1% 0;
-    border-radius: 5px;
-    background: #F5F4F4;
-    cursor: pointer;
-    border: 1px solid #c4c4c4;
+    margin: 2% 0 1% 0;
 }
 p.requiredFild{
     color: #f10505;

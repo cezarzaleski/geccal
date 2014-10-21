@@ -25,7 +25,8 @@ class UtilHelper extends AbstractHelper {
 
     public function getJavaScript()
     {
-        return "/js" . $this->utils->getRequest()->getUri()->getPath() . ".js";
+        $uri = explode("/", $this->utils->getRequest()->getUri()->getPath());
+        return "/js/" . $uri[1] . '/' . $uri[2] . '/' . $uri[3] . '.js';
     }
 
 }
