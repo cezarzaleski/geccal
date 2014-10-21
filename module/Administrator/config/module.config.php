@@ -16,7 +16,8 @@ return array(
                     'default' => array(
                         'type' => 'Segment',
                         'options' => array(
-                            'route' => '/[:controller[/:action]][/:id]',
+                            'route' => '/[:controller[/:action]]',
+//                            'route' => '/[:module[/:controller[/:action]]][/:id]',
                             'constraints' => array(
                                 'module' => '(admin)',
                                 'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',

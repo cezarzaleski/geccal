@@ -48,8 +48,17 @@
                             </thead>
                             <tbody>
                                 <?php
-                                    echo $this->partialLoop('administrator/funcao-atividade/funcao-atividade.phtml', $this->data);
-                                ?>
+                                if ($this->data) {
+                                    foreach ($this->data as $entity) {
+                                        ?>
+                                        <tr class="pointer" name="selected[]" rel="<?php echo $this->Criptografia()->cripto($entity->getIdFuncaoAtividade()); ?>">
+                                            <td><input type="checkbox" rel="<?php echo $this->Criptografia()->cripto($entity->getIdFuncaoAtividade()); ?>"></td>
+                                            <td class="gradeA"><?php echo $entity->getNoFuncaoAtividade(); ?></td>
+                                        </tr>
+        <?php
+    }
+}
+?>
                             </tbody>
                         </table>
                     </div>

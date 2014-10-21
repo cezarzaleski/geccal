@@ -6,8 +6,6 @@ use Zend\Mvc\Controller\AbstractActionController,
     Zend\View\Model\ViewModel;
 use Doctrine\ORM\EntityManager;
 use Zend\View\Model\JsonModel;
-use Zend\Paginator\Adapter\ArrayAdapter;
-use Zend\Paginator\Paginator;
 
 abstract class ControllerAbstract extends AbstractActionController {
 
@@ -28,12 +26,7 @@ abstract class ControllerAbstract extends AbstractActionController {
         $data = $this->getEm()
                 ->getRepository($this->entity)
                 ->findAll();
-        $partialLoop = $this->getServiceLocator()->get('viewhelpermanager')
-                ->get('PartialLoop');
-        $partialLoop->setObjectKey('model');
-        $pageAdapter = new ArrayAdapter($data);
-        $paginator = new Paginator($pageAdapter);
-        return new ViewModel(array('data' => $paginator));
+        return new ViewModel(array('data' => $data));
     }
 
     public function cadastrarAction()
@@ -62,33 +55,32 @@ abstract class ControllerAbstract extends AbstractActionController {
         $request = $this->getRequest();
         $repository = $this->getEm()->getRepository($this->entity);
         if ($this->params()->fromRoute('id', 0)) {
-            $entity = $repository->find($this->getCriptografia()->
-                    descript($this->params()->fromRoute('id', 0)));
+            $entity = $repository->find($this->getCriptografia()->descript($this->params()->fromRoute('id', 0)));
             $array = $entity->toArray();
             $array['stAtivo'] = TRUE;
             $form->setData($array);
-            $this->viewModel = new ViewModel(array('form' => $form, 
-                'entity' => $entity->toArray()));
+            $this->viewModel = new ViewModel(array('form' => $form, 'entity' => $entity->toArray()));
         }
-//        if ($request->isPost()) {
-//            $data = $request->getPost()->toArray();
-//            $form->setData($data);
-//            if ($form->isValid()) {
-//                $service = $this->getServiceLocator()->get($this->service);
-//                if ($service->update($data['idFuncaoAtividade'], $data)) {
-//                    $return = array('error' => FALSE,
-//                        'message' => 'Alterado com Sucesso.');
-//                } else {
-//                    $return = array('error' => TRUE,
-//                        'message' => 'Não foi possível alterar, entre em contato com o Administrador.');
-//                }
-//            } else {
-//                $return = array('error' => TRUE,
-//                    'message' => 'Não foi possível alterar, entre em contato com o Administrador.');
-//            }
-//            $this->viewModel = $this->getJson($return);
-//        }
-//        return $this->viewModel;
+        if ($request->isPost()) {
+            $data = $request->getPost()->toArray();
+            $form->setData($data);
+            if ($form->isValid()) {
+                $service = $this->getServiceLocator()->get($this->service);
+
+                if ($service->update($data['idFuncaoAtividade'], $data)) {
+                    $return = array('error' => FALSE,
+                        'message' => 'Alterado com Sucesso.');
+                } else {
+                    $return = array('error' => TRUE,
+                        'message' => 'Não foi possível alterar, entre em contato com o Administrador.');
+                }
+            } else {
+                $return = array('error' => TRUE,
+                    'message' => 'Não foi possível alterar, entre em contato com o Administrador.');
+            }
+            $this->viewModel = $this->getJson($return);
+        }
+        return $this->viewModel;
     }
 
     public function deleteAction()
@@ -102,29 +94,26 @@ abstract class ControllerAbstract extends AbstractActionController {
     protected function getEm()
     {
         if (NULL === $this->em) {
-            $this->em = $this->getServiceLocator()
-                    ->get('Doctrine\ORM\EntityManager');
+            $this->em = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
         }
         return $this->em;
     }
 
     protected function getCriptografia()
     {
-        $this->criptografia = $this->getServiceLocator()
-                ->get('viewhelpermanager')->get('Criptografia');
+        $this->criptografia = $this->getServiceLocator()->get('viewhelpermanager')->get('Criptografia');
         return $this->criptografia;
     }
 
     private function insert($data)
     {
         $service = $this->getServiceLocator()->get($this->service);
+        
         if ($service->insert($data)) {
             return array('error' => FALSE,
                 'message' => 'Cadastrado com Sucesso.');
         }
         return array('error' => TRUE,
-            'message' => 'Não foi possível cadastrar, entre em contato com o '
-            . 'Administrador.');
+            'message' => 'Não foi possível cadastrar, entre em contato com o Administrador.');
     }
-
 }
