@@ -46,12 +46,18 @@ $(function() {
         $('input', oTable.$('tr', {
             "filter": "applied"
         })).prop('checked', chk);
+
+        if (chk) {
+            $('a#excluir button').show();
+        } else {
+            $('a#excluir button').hide();
+        }
     });
 
 
-/*validação de formulário
- * 
- */
+    /*validação de formulário
+     * 
+     */
     jQuery.validator.setDefaults({
         highlight: function(element) {
             $(element).closest('.form-group').addClass('has-error');

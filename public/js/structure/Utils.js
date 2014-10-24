@@ -2,12 +2,9 @@
  * Funções utilitárias
  */
 var Utils = {
-    //
     edition: function(url) {
         var option = true;
-//        $('a#excluir button').show();
         $('td input[type=checkbox]').click(function() {
-            
             var idCheck = $(this).attr('rel');
             option = false;
             var check = false;
@@ -16,14 +13,13 @@ var Utils = {
             });
             if (check) {
                 $('tr[rel="' + idCheck + '"]').each(function() {
-                    alert('tr[rel="' + idCheck + '"]');
-//                    if ($(this).text() === "Ativo") {
-                    if ($(this).chetext() === "Ativo") {
+                    $('a#excluir button').show();
+                    if ($(this).text() === "Ativo") {
                         $('a#excluir button').show();
                     }
                 });
             } else {
-                $('div#excluir button').hide();
+                $('a#excluir button').hide();
             }
         });
         $('tbody tr td.link').click(function() {
