@@ -6,6 +6,8 @@ use Zend\Mvc\Controller\AbstractActionController,
     Zend\View\Model\ViewModel;
 use Doctrine\ORM\EntityManager;
 use Zend\View\Model\JsonModel;
+use Zend\Paginator\Adapter\ArrayAdapter;
+use Zend\Paginator\Paginator;
 
 abstract class ControllerAbstract extends AbstractActionController {
 
@@ -88,7 +90,8 @@ abstract class ControllerAbstract extends AbstractActionController {
     protected function getEm()
     {
         if (NULL === $this->em) {
-            $this->em = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
+            $this->em = $this->getServiceLocator()
+                    ->get('Doctrine\ORM\EntityManager');
         }
         return $this->em;
     }
@@ -103,13 +106,13 @@ abstract class ControllerAbstract extends AbstractActionController {
     private function insert($data)
     {
         $service = $this->getServiceLocator()->get($this->service);
-        
         if ($service->insert($data)) {
             return array('error' => FALSE,
                 'message' => 'Cadastrado com Sucesso.');
         }
         return array('error' => TRUE,
-            'message' => 'Não foi possível cadastrar, entre em contato com o Administrador.');
+            'message' => 'Não foi possível cadastrar, entre em contato com o '
+            . 'Administrador.');
     }
 
     private function loadingData($form, $repository)
